@@ -1,0 +1,13 @@
+diff --git a/release/picobsd/build/picobsd b/release/picobsd/build/picobsd
+index 19a9839..4a4f82b 100755
+--- a/release/picobsd/build/picobsd
++++ b/release/picobsd/build/picobsd
+@@ -888,7 +888,7 @@ fill_floppy_image() {
+ 	# build_iso_image	# XXX not implemented yet
+ 	(cd ${BUILDDIR}
+ 	cp -p /boot/cdboot ${dst}/boot || fail $? no_space "copying cdboot"
+-	mkisofs -b boot/cdboot -no-emul-boot -J -r -ldots -l -L \
++	mkisofs -b boot/cdboot -no-emul-boot -J -r -ldots -l -posix-L \
+ 		-o ${c_iso} ${dst}
+ 	)
+     fi

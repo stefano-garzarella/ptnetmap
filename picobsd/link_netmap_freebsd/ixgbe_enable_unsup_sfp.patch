@@ -1,0 +1,13 @@
+diff --git a/sys/dev/ixgbe/ixgbe.c b/sys/dev/ixgbe/ixgbe.c
+index 359279d..168f547 100644
+--- a/sys/dev/ixgbe/ixgbe.c
++++ b/sys/dev/ixgbe/ixgbe.c
+@@ -316,7 +316,7 @@ SYSCTL_INT(_hw_ix, OID_AUTO, rxd, CTLFLAG_RDTUN, &ixgbe_rxd, 0,
+ ** of unsupported SFP+ modules, note that
+ ** doing so you are on your own :)
+ */
+-static int allow_unsupported_sfp = FALSE;
++static int allow_unsupported_sfp = TRUE;
+ TUNABLE_INT("hw.ix.unsupported_sfp", &allow_unsupported_sfp);
+ 
+ /*

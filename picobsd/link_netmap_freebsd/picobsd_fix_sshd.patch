@@ -1,0 +1,80 @@
+diff --git a/release/picobsd/build/picobsd b/release/picobsd/build/picobsd
+index 19a9839..62985aa 100755
+--- a/release/picobsd/build/picobsd
++++ b/release/picobsd/build/picobsd
+@@ -670,7 +670,7 @@ populate_mfs_tree() {
+     ) || fail $? crunch
+ 
+     log "Setting up host key for sshd:"
+-    for K in rsa1 rsa dsa ; do
++    for K in rsa1 rsa dsa ecdsa; do
+ 	if [ $K = rsa1 ] ; then
+ 	    i=ssh_host_key
+ 	else
+diff --git a/release/picobsd/floppy.tree/etc/rc1 b/release/picobsd/floppy.tree/etc/rc1
+index a4a0798..19e95d5 100644
+--- a/release/picobsd/floppy.tree/etc/rc1
++++ b/release/picobsd/floppy.tree/etc/rc1
+@@ -54,8 +54,9 @@ pwd_mkdb -p ./master.passwd
+ 
+ if [ "${sshd_enable}" = "YES" -a -f /usr/sbin/sshd ] ; then
+ 	echo "Starting sshd..."
+-	chmod 600 /etc/ssh_host*key
+-	/usr/sbin/sshd -f /etc/sshd_config
++	mv /etc/ssh_host* /etc/ssh/
++	chmod 600 /etc/ssh/*
++	/usr/sbin/sshd -f /etc/ssh/sshd_config
+ fi
+ 
+ echo ''
+diff --git a/release/picobsd/floppy.tree/etc/ssh/sshd_config b/release/picobsd/floppy.tree/etc/ssh/sshd_config
+index 4529c41..7a3c816 100644
+--- a/release/picobsd/floppy.tree/etc/ssh/sshd_config
++++ b/release/picobsd/floppy.tree/etc/ssh/sshd_config
+@@ -1,25 +1,27 @@
+ # $FreeBSD$
+ # minimal config for sshd on picobsd
+-Port 22
+-ListenAddress 0.0.0.0
+-HostKey  /etc/ssh_host_key
+-#RandomSeed /etc/ssh_random_seed
+-ServerKeyBits 768
+-LoginGraceTime 600
+-KeyRegenerationInterval 3600
+-PermitRootLogin yes
+-IgnoreRhosts no
+-StrictModes yes
+-X11Forwarding no
+-X11DisplayOffset 10
+-PrintMotd yes
+-KeepAlive yes
+-SyslogFacility AUTH
+-RhostsRSAAuthentication yes
+-RSAAuthentication yes
++UsePAM no
+ PasswordAuthentication yes
+-PermitEmptyPasswords no
+-UseLogin no
++PermitRootLogin yes
++#Port 22
++#ListenAddress 0.0.0.0
++#HostKey  /etc/ssh_host_key
++#RandomSeed /etc/ssh_random_seed
++#ServerKeyBits 768
++#LoginGraceTime 600
++#KeyRegenerationInterval 3600
++#IgnoreRhosts no
++#StrictModes yes
++#X11Forwarding no
++#X11DisplayOffset 10
++#PrintMotd yes
++#KeepAlive yes
++#SyslogFacility AUTH
++#RhostsRSAAuthentication yes
++#RSAAuthentication yes
++#PasswordAuthentication yes
++#PermitEmptyPasswords no
++#UseLogin no
+ # CheckMail no
+ # PidFile /u/zappa/.ssh/pid
+ # AllowHosts *.our.com friend.other.com

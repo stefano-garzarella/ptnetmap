@@ -1,0 +1,5 @@
+
+picobsd:
+1) ./create_picobsd.sh --init
+2) ./create_picobsd.sh
+

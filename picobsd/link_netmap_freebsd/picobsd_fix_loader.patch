@@ -1,0 +1,21 @@
+diff --git a/release/picobsd/build/picobsd b/release/picobsd/build/picobsd
+index 19a9839..adb927f 100755
+--- a/release/picobsd/build/picobsd
++++ b/release/picobsd/build/picobsd
+@@ -864,9 +864,17 @@ fill_floppy_image() {
+     # XXX loader.conf does not work unless we also load the .4th files
+     # echo "hint.acpi.0.disabled=\"1\"" > ${dst}/boot/loader.conf
+     # echo "console=\"comconsole\"" >> ${dst}/boot/loader.conf
+-    local blf="loader* *.4th" # loader.rc loader.4th support.4th"
++
++	mkdir -p  ${dst}/boot/defaults
++	cp -p /boot/*.4th   ${dst}/boot/
++	cp -p /boot/defaults/loader.conf ${dst}/boot/defaults/loader.conf
++
++	echo "include /boot/loader.4th" > ${dst}/boot/loader.rc
++	echo "start" >> ${dst}/boot/loader.rc
++	echo "boot" >> ${dst}/boot/loader.rc
++
+     (cd /boot; cp -p loader ${dst}/boot) || fail $? no_space "copying bootloader"
+     cp ${MY_TREE}/floppy.tree/boot/loader.conf ${dst}/boot || true
+     gzip -c kernel > ${dst}/boot/kernel/kernel.gz || fail $? no_space "copying kernel"

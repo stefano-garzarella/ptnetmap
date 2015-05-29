@@ -1,0 +1,16 @@
+[submodule "netmap"]
+	path = netmap
+	url = https://github.com/stefano-garzarella/netmap.git
+	branch = ptnetmap_memdev
+[submodule "qemu"]
+	path = qemu
+	url = https://github.com/stefano-garzarella/qemu.git
+	branch = ptnetmap_memdev
+[submodule "linux"]
+	path = linux
+	url = https://github.com/stefano-garzarella/linux.git
+	branch = ptnetmap_memdev
+[submodule "freebsd"]
+	path = freebsd
+	url = https://github.com/stefano-garzarella/freebsd.git
+	branch = ptnetmap_memdev

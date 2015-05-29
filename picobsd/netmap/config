@@ -1,0 +1,58 @@
+# configuration for picobsd build script.
+# $FreeBSD: stable/9/release/picobsd/qemu/config 201076 2009-12-28 01:25:05Z luigi $
+# it should only contain variable definitions -- it is sourced
+# by the shell much like rc.conf* files
+
+fd_size="12240"
+
+# To copy individual files you can use the function  do_copyfiles_user
+# as below (find_progs locates the programs and their libraries,
+# then you manually copy them.
+#copy_files="
+#"
+do_copyfiles_user() {
+	local dst=$1 # the destination root
+	log "--- put the libraries in /usr/lib to avoid conflicts"
+	mkdir -p ${dst}/usr/lib
+	# log "-- import dropbear from its build directory --"
+	# find_progs -L / -P /usr/ports/security/dropbear/work/dropbear-2012.55 \
+	#	dbclient dropbear
+	# cp -p ${u_progs} ${dst}/bin
+	# cp -p ${u_libs} ${dst}/usr/lib
+	log "--- also import ssh, scp and sshd ---"
+	find_progs -L / /usr/bin/ssh /usr/bin/scp /usr/sbin/sshd
+	cp -p ${u_progs} ${dst}/bin
+	cp -p ${u_libs} ${dst}/usr/lib
+	
+	#find_progs -L / -P /usr/local/bin trafshow netperf netserver iperf3
+	#cp -p ${u_progs} ${dst}/bin
+	#cp -p ${u_libs} ${dst}/usr/lib
+	
+	#find_progs -L / -P /usr/bin egrep
+	#cp -p ${u_progs} ${dst}/bin
+	#cp -p ${u_libs} ${dst}/usr/lib
+
+	find_progs -L / -P /home/stefano/repos/passthrough/netmap/examples pkt-gen bridge vale-ctl
+	cp -p ${u_progs} ${dst}/bin
+	cp -p ${u_libs} ${dst}/usr/lib
+
+	#find_progs -L / -P /usr/local/bin ttcp
+	#cp -p ${u_progs} ${dst}/bin
+	#cp -p ${u_libs} ${dst}/usr/lib
+	
+	#find_progs -L / -P /home/stefano/apps netsend
+	#cp -p ${u_progs} ${dst}/bin
+	#cp -p ${u_libs} ${dst}/usr/lib
+        
+	if [ ${TARGET_ARCH} = amd64 ]; then
+		cp -p /usr/lib/libssh.so.5 /lib/libmd.so.5 ${dst}/usr/lib
+		cp -p /usr/local/lib/libiperf.so.0 ${dst}/usr/local/lib
+	else
+	fi 
+
+	#STE - modules - before create picobsd image with --modules parameter
+	#mkdir -p ${dst}/root/modules
+	#cp ${BUILDDIR}/PICOBSD-${name}/modules/${SRC}/sys/modules/cc/*/*.ko ${dst}/root/modules/
+	#cp ${BUILDDIR}/PICOBSD-${name}/modules/${SRC}/sys/modules/ixgbe/*.ko ${dst}/root/modules/
+}
+

@@ -1,0 +1,13 @@
+diff --git a/release/picobsd/floppy.tree/etc/rc.conf.defaults b/release/picobsd/floppy.tree/etc/rc.conf.defaults
+index 8b8bdf3..beb1bb2 100644
+--- a/release/picobsd/floppy.tree/etc/rc.conf.defaults
++++ b/release/picobsd/floppy.tree/etc/rc.conf.defaults
+@@ -35,7 +35,7 @@ default_mask="0xffffff00"
+ firewall_enable="NO"
+ firewall_quiet="NO"		# be quiet if set.
+ firewall_type=""		# Standard types or absolute pathname.
+-tcp_extensions="NO"		# Allow RFC1323 & RFC1644 extensions (or NO).
++tcp_extensions="YES"		# Allow RFC1323 & RFC1644 extensions (or NO).
+ 
+ ### Overrides for some files in /etc. Leave empty if no override,
+ ### set variable (remember to use multiple lines) to override content.
