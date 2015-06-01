@@ -11,6 +11,7 @@ Compared to existing solutions, this kind of passthrough has most of netmap stre
  * vendor independenc
  * use of commodity hardware
  * the possibility to avoid busy polling.
+
 Moreover, it offers a degree of flexibility on the amount of memory sharing among virtual machines: VALE ports can be used to isolate untrusted VMs from each other, while netmap pipes can be used to create chains of trusted VMs accessing the same buffer memory.
 
 Our preliminary version supports linux/KVM as a host and Linux or FreeBSD as a guest.
@@ -33,7 +34,9 @@ After that, you can use the <code>submodules_checkout.sh</code> script to switch
 
 ##Links
 [GSoC2015 - A FreeBSD/bhyve version of the netmap virtual passthrough for VMs.] (https://wiki.freebsd.org/SummerOfCode2015/ptnetmapOnBhyve#preview)
+
 [ptnetmap slides - AsiaBSDCon 2015] (https://socsvn.freebsd.org/socsvn/soc2015/stefano/ptnetmap-docs/ptnetmap_AsiaBSDCon_2015.pdf)
+
 [Virtual device passthrough for high speed VM networking] (http://info.iet.unipi.it/~luigi/papers/20150315-netmap-passthrough.pdf) Stefano Garzarella, Giuseppe Lettieri, Luigi Rizzo
 
 ##Configure and compile ptnetmap modules
