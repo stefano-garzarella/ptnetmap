@@ -41,21 +41,29 @@ After that, you can use the <code>submodules_checkout.sh</code> script to switch
 
 ##Configure and compile ptnetmap modules
 NETMAP host (netmap/LINUX):
-./configure --kernel-dir=../kernel-host/ --enable-passthrough
-make -j
+```
+$ ./configure --kernel-dir=../kernel-host/ --enable-passthrough
+$ make -j
+```
 
 NETMAP guest (netmap/LINUX):
-./configure --kernel-dir=../linux/ --enable-passthrough --drivers=e1000 --drivers-no-patch=e1000
-make -j
+```
+$ ./configure --kernel-dir=../linux/ --enable-passthrough --drivers=e1000 --drivers-no-patch=e1000
+$ make -j
+```
 
 QEMU:
-./configure --target-list=x86_64-softmmu  --enable-e1000-paravirt --enable-netmap --enable-ptnetmap --extra-cflags=-I$HOME/repos/ptnetmap/netmap/sys --python=python2
-make -j
+```
+$ ./configure --target-list=x86_64-softmmu  --enable-e1000-paravirt --enable-netmap --enable-ptnetmap --extra-cflags=-I$HOME/repos/ptnetmap/netmap/sys --python=python2
+$ make -j
+```
 
 ##Run ptnetmap
+```
 [host] sudo insmod netmap.ko
 [host] sudo where/is/qemu-system-x86_64 .... -device e1000-paravirt,netdev=mynet -netdev netmap,ifname=vale0:1,passthrough=on,id=mynet ..
 
 [guest] modprobe netmap
 [guest] modprobe e1000 paravirtual=1
+```
 
