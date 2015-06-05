@@ -8,7 +8,7 @@ netmap port opened in the host with near-native performance (physical devices [1
 software switches [20 Mpps], shared memory channels [75 Mpps]).
 
 Compared to existing solutions, this kind of passthrough has most of netmap strengths:
- * vendor independenc
+ * vendor independence
  * use of commodity hardware
  * the possibility to avoid busy polling.
 
