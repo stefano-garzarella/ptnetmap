@@ -22,15 +22,16 @@ This repository has a submodules for each part that we have modified to implemen
  * netmap
  * qemu
  * linux
+ * bhyve
  * freebsd
 
-In each submodules, we have "ptnetmap_memdev" branch that contains our modifications.
-In linux/freebsd submodules we only modified the e1000 device driver to support ptnetmap.
+In each submodules, we have "ptnetmap" branch that contains our modifications. In bhyve and freebsd and bhyve, we also have "ptnetmap10" branch that are based on FreeBSD 10-STABLE.
+In linux/freebsd submodules we only modified the e1000 and virtio-net device drivers to support ptnetmap.
 
 Notes:
 Since linux and freebsd repos are very large, if you have already checked out these repos (also from github.com), it is better if you use the <code>init_submodules.sh</code> script to initialize them with a reference to the repos already downloaded. (setting DIR_REPOS).
 Otherwise you can do <code>git submodule update --init —recursive</code> in ptnetmap dir to initialize and download all submodules.
-After that, you can use the <code>submodules_checkout.sh</code> script to switch to the "ptnetmap_memdev" branch in each submodules.
+After that, you can use the <code>submodules_checkout.sh</code> script to switch to the "ptnetmap" branch in each submodules.
 
 ##Links
 [GSoC2015 - A FreeBSD/bhyve version of the netmap virtual passthrough for VMs.] (https://wiki.freebsd.org/SummerOfCode2015/ptnetmapOnBhyve#preview)
