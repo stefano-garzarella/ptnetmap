@@ -42,13 +42,13 @@ After that, you can use the <code>submodules_checkout.sh</code> script to switch
 ##Configure and compile ptnetmap modules
 NETMAP host (netmap/LINUX):
 ```
-$ ./configure --kernel-dir=../kernel-host/ --enable-passthrough
+$ ./configure --kernel-dir=../kernel-host/ --enable-ptnetmap-host
 $ make -j
 ```
 
 NETMAP guest (netmap/LINUX):
 ```
-$ ./configure --kernel-dir=../linux/ --enable-passthrough --drivers=e1000 --drivers-no-patch=e1000
+$ ./configure --kernel-dir=../linux/ --enable-ptnetmap-guest --drivers=virtio-net
 $ make -j
 ```
 
@@ -61,9 +61,9 @@ $ make -j
 ##Run ptnetmap
 ```
 [host] sudo insmod netmap.ko
-[host] sudo where/is/qemu-system-x86_64 .... -device e1000-paravirt,netdev=mynet -netdev netmap,ifname=vale0:1,passthrough=on,id=mynet ..
+[host] sudo where/is/qemu-system-x86_64 .... -device virtio-net-pci,netdev=mynet -netdev netmap,ifname=vale0:1,passthrough=on,id=mynet ..
 
 [guest] modprobe netmap
-[guest] modprobe e1000 paravirtual=1
+[guest] modprobe vitio-net
 ```
 
