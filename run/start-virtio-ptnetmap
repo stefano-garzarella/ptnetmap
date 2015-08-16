@@ -1,0 +1,98 @@
+#!/bin/bash
+
+QEMU=../build/qemu/x86_64-softmmu/qemu-system-x86_64
+KERNEL=../build/linux
+INITRD=../build/initrd/ninitrd.img
+BSD=
+NO_OUT=0
+#INITRD=$HOME/repos/buildroot/output/images/rootfs.cpio.gz
+SLOTS=1024
+RINGS=1
+NETMAP_1="vale0:1"
+NETMAP_2="vale1:1"
+PIPE=0
+CASCADE=0
+NIC_1=0
+NIC_2=0
+
+while [ x"$1" != x ] ; do
+    case "$1" in
+        -slots)
+            SLOTS=$2
+            shift
+            ;;
+        -rings)
+            RINGS=$2
+            shift
+            ;;
+        -pipe)
+            PIPE=1
+            NETMAP_1="vale1{3"
+            NETMAP_2="vale2{4"
+            ;;
+        -cascade)
+            CASCADE=1
+            NETMAP_1="vale1{3"
+            NETMAP_2="vale1{5"
+            ;;
+        -nic)
+            NIC_1=1
+            NETMAP_1="netmap:$2"
+            shift
+            ;;
+        -nic2)
+            NIC_2=1
+            NETMAP_2="netmap:$2"
+            shift
+            ;;
+        -bsd)
+            BSD="./picobsd_ptnetmap.bin"
+            ;;
+        -noout)
+            NO_OUT=1
+            ;;
+        *)
+            ;;
+    esac
+    shift
+done
+
+source start-common.sh
+set -x
+echo $N
+if [ "$N" != 1 ]; then
+    if [ "$PIPE" == 1 ]; then
+        if [ "$N" == 2 ]; then
+            NETMAP_1="vale1}3"
+            NETMAP_2="vale2}4"
+        fi
+    elif [ "$CASCADE" == 1 ]; then
+        if [ "$N" == 2 ]; then
+            NETMAP_1="vale2}3"
+            NETMAP_2="vale3}3"
+        fi
+        if [ "$N" == 3 ]; then
+            NETMAP_1="vale3{3"
+            NETMAP_2="vale4{3"
+        fi
+        if [ "$N" == 4 ]; then
+            NETMAP_1="vale4}3"
+            NETMAP_2="vale5}3"
+        fi
+
+    else
+        if [ "$NIC_1" == 0 ]; then
+            NETMAP_1=${NETMAP_1}$N
+        fi
+        if [ "$NIC_2" == 0 ]; then
+            NETMAP_2=${NETMAP_2}$N
+        fi
+    fi
+fi
+
+O="$O -device virtio-net-pci,mac=00:01:02:03:04:0$N,netdev=mynet"
+O="$O -device virtio-net-pci,mac=00:01:02:03:05:0$N,netdev=mynet2"
+O="$O -netdev netmap,ifname=${NETMAP_1},rings=$RINGS,slots=$SLOTS,passthrough=on,id=mynet"
+O="$O -netdev netmap,ifname=${NETMAP_2},rings=$RINGS,slots=$SLOTS,passthrough=on,id=mynet2"
+
+start_qemu "$@"
