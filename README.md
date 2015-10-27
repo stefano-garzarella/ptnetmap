@@ -66,5 +66,6 @@ $ make -j
 
 [guest] modprobe netmap
 [guest] modprobe vitio-net
+[guest] ifconfig eth0 up
 ```
 
